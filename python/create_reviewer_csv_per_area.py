@@ -18,6 +18,8 @@ output path- A directory in which to create the output files.
 '''
 		
 class ACLAreaReviwerCSVCreater:
+	name_field = 'name'
+	email_field = 'email'
 	def getAreaNames(self, column_names):
 		areas = []
 		for entry in column_names:
@@ -84,12 +86,16 @@ class ACLAreaReviwerCSVCreater:
 		
 		area_names = self.getAreaNames(column_names)
 		
-		
+		if 'name (first last)' in column_names:
+			self.name_field = 'name (first last)'
+		if 'email address' in column_names:
+			self.email_field = 'email address'
+			
 		for column_name, area_name in area_names:
 			possible_reviewers = []
 			for entry in acl_reviewer_stats_contents:
-				name = entry['name']
-				email = entry['email']
+				name = entry[self.name_field]
+				email = entry[self.email_field]
 				
 
 				# What di this person choose for this area.
@@ -99,7 +105,7 @@ class ACLAreaReviwerCSVCreater:
 					possible_reviewers.append((name, email))
 			
 			print '%s: %d' % (area_name, len(possible_reviewers))
-			output_filename = os.path.join(output_path, area_name.replace(' ', '_').replace('&', '_').lower() + '.tsv')
+			output_filename = os.path.join(output_path, area_name.replace(' ', '_').replace('/', '_').replace('&', '_').lower() + '.tsv')
 			output = open(output_filename, 'w')
 			
 			output.write('#Area:\t%s\n' % (area_name))

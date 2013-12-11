@@ -70,6 +70,9 @@ class ACLAssignGreedyReviewers:
 		self.want_string = 'Want to review (1st Choices)'
 		self.willing_string = 'Willing to review (2nd Choices)'
 		self.will_not_string = 'Will not review'
+		self.name_field = 'name'
+		self.email_field = 'email'
+	
 		pass
 	
 	
@@ -78,7 +81,11 @@ class ACLAssignGreedyReviewers:
 		
 		
 		column_names = csv_loader.getColumnNames()
-
+		if 'name (first last)' in column_names:
+			self.name_field = 'name (first last)'
+		if 'email address' in column_names:
+			self.email_field = 'email address'
+		
 		area_entry_to_name = {}
 		for entry in column_names:
 			if entry.startswith('areas ['):
@@ -98,8 +105,8 @@ class ACLAssignGreedyReviewers:
 			num_lines += 1
 			if len(entry) == 0:
 				continue
-			name = entry['name']
-			email = entry['email'].lower()
+			name = entry[self.name_field]
+			email = entry[self.email_field].lower().strip()
 			load_for_reviewer = entry['reduced review load (optional)']
 			
 			reviewer_id = name.replace(' ', '_') + '_' + email.replace(' ', '_')
@@ -458,7 +465,8 @@ class ACLAssignGreedyReviewers:
 		
 		output.write('#name\temail\tmax papers to assign\tarea\n')
 		for area_name, reviewers in assignments.iteritems():
-			area_output = open(output_filename_prefix + area_name + '.csv', 'w')
+			filename = area_name.replace(' ', '_').replace('/', '_').replace('&', '_')
+			area_output = open(output_filename_prefix + filename + '.csv', 'w')
 			area_output.write('#name\temail\tmax papers to assign\n')
 			for reviewer in reviewers:
 				reviewer_name, reviewer_email = from_reviewer_id_dict[reviewer]
