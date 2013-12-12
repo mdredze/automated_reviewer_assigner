@@ -589,7 +589,7 @@ class ACLAssignGreedyReviewers:
 		assign_all_whitelist_reviewers_to_area = None#set(['spoken language processing', 'nlp-enabled technology'])
 		
 		# These areas receive extra reviewers on each round so they fill up.
-		priority_areas = set(['spoken language processing', 'nlp-enabled technology', 'multimodal nlp'])
+		priority_areas = None#set(['spoken language processing', 'nlp-enabled technology', 'multimodal nlp'])
 		self.increase_priority_factor = 2
 		
 		# Small tracks may end up getting a handfull of reviewers. Ensure that there are at least this many
