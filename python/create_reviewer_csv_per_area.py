@@ -109,8 +109,8 @@ class ACLAreaReviwerCSVCreater:
 			output = open(output_filename, 'w')
 			
 			output.write('#Area:\t%s\n' % (area_name))
-			output.write('#Area Load:\t5\n')
-			output.write('#Paper Load:\t1\n')
+			output.write('#Area Load:\t4\n') # How many papers each reviewer will review
+			output.write('#Paper Load:\t3\n') # The number of reviewers needed for each paper
 			for name, email in possible_reviewers:
 				output.write('%s\t%s\n' % (name, email))
 			output.close()
