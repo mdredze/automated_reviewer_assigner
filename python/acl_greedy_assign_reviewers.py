@@ -365,7 +365,11 @@ class ACLAssignGreedyReviewers:
 		
 		areas.sort()
 		for area in areas:
-			print '%s (Reviewers: %d, Max review capacity: %d, Actual reviews needed: %d)' % (area, len(assignments[area]), area_to_num_reviews_assigned[area]/area_to_paper_load[area], area_to_num_papers[area])
+			coverage = area_to_num_reviews_assigned[area]/area_to_paper_load[area] / float(area_to_num_papers[area]) * 100
+			prefix = ''
+			if coverage < 100:
+				prefix='* '
+			print '%s%s (Reviewers: %d, Max review capacity: %d, Actual reviews needed: %d, Coverage: %.0f%%)' % (prefix, area, len(assignments[area]), area_to_num_reviews_assigned[area]/area_to_paper_load[area], area_to_num_papers[area], coverage)
 				
 		return assignments, area_to_num_reviews_assigned
 	
