@@ -7,6 +7,7 @@ import os, sys, csv, re
 
 '''
 Author: Mark Dredze (mdredze@cs.jhu.edu)
+        Jiang Guo   (jguo@ir.hit.edu.cn)
 
 This script creates CSV files, one per area.
 
@@ -122,7 +123,7 @@ class ACLAreaReviwerCSVCreater:
                 email = entry[self.email_field]
                 account = entry[self.account_field]
 
-                # What di this person choose for this area.
+                # What did this person choose for this area.
                 area_choice = entry.setdefault(column_name, '')
 
                 # if area_choice == want_string:
