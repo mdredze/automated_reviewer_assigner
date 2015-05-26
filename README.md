@@ -6,3 +6,5 @@ The directions and code needed to run an automated reviewer assignment system. T
 This system is under active development and not ready for use. 
 
 Contact Mark Dredze (mdredze _at_ cs dot jhu dot edu) with questions.
+
+Documentation: https://drive.google.com/folderview?id=0B7pRzqYWBOrkemdheUlWWlMxX0U
