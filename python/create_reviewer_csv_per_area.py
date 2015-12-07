@@ -64,6 +64,7 @@ class ACLAreaReviwerCSVCreater:
                 names_to_columns, columns_to_names = self.mapColumns(entry)
                 continue
             line = {}
+            print len(entry), entry 
             for jj in range(len(entry)):
                 line[columns_to_names[jj]] = entry[jj]
             contents.append(line)
@@ -111,6 +112,8 @@ class ACLAreaReviwerCSVCreater:
 
         if 'name (first last)' in column_names:
             self.name_field = 'name (first last)'
+        if 'surname or family name' in column_names and 'first name':
+            self.name_field = ('surname or family name', 'first name')
         if 'email address' in column_names:
             self.email_field = 'email address'
         if 'start account username' in column_names:
@@ -119,7 +122,10 @@ class ACLAreaReviwerCSVCreater:
         for column_name, area_name in area_names:
             possible_reviewers = []
             for entry in acl_reviewer_stats_contents:
-                name = entry[self.name_field]
+                if type(self.name_field) == tuple:
+                    name = '%s %s' % (entry[self.name_field[0]], entry[self.name_field[1]])
+                else:
+                    name = entry[self.name_field]
                 email = entry[self.email_field]
                 account = entry[self.account_field]
 
