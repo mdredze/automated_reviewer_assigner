@@ -72,7 +72,7 @@ class ACLAssignGreedyReviewers:
 		self.will_not_string = 'Will not review'
 		self.name_field = 'name'
 		self.email_field = 'email'
-	
+		self.start_account_username = 'start account username'
 		pass
 	
 	
@@ -107,6 +107,8 @@ class ACLAssignGreedyReviewers:
 				continue
 			name = entry[self.name_field]
 			email = entry[self.email_field].lower().strip()
+			start_account_username = entry[self.start_account_username]
+			
 			load_for_reviewer = entry['reduced review load (optional)']
 			
 			reviewer_id = name.replace(' ', '_') + '_' + email.replace(' ', '_')
@@ -136,7 +138,7 @@ class ACLAssignGreedyReviewers:
 			emails.add(email)
 			
 			emails_to_reviewer_id_dict[email] = reviewer_id
-			tuple = (name, email)
+			tuple = (name, email, start_account_username)
 			
 			from_reviewer_id_dict[reviewer_id] = tuple
 			area_choices = []
@@ -467,17 +469,20 @@ class ACLAssignGreedyReviewers:
 	def printFinalAssignmentStats(self, output_filename_prefix, assignments, from_reviewer_id_dict, reviewer_load_constraint):
 		output = open(output_filename_prefix + '_all_list.csv', 'w')
 		
-		output.write('#name\temail\tmax papers to assign\tarea\n')
+		#output.write('#name\temail\tmax papers to assign\tarea\n')
+		output.write('#username\temail\tfirst\tlast\ttrack\tmax papers to assign\n')
 		for area_name, reviewers in assignments.iteritems():
 			filename = area_name.replace(' ', '_').replace('/', '_').replace('&', '_')
 			area_output = open(output_filename_prefix + filename + '.csv', 'w')
 			area_output.write('#name\temail\tmax papers to assign\n')
 			for reviewer in reviewers:
-				reviewer_name, reviewer_email = from_reviewer_id_dict[reviewer]
+				reviewer_name, reviewer_email, start_account_username = from_reviewer_id_dict[reviewer]
 				load_constraint = ''
 				if reviewer in reviewer_load_constraint:
 					load_constraint = str(reviewer_load_constraint[reviewer])
-				output.write('%s\t%s\t%s\t%s\n' % (reviewer_name, reviewer_email, load_constraint, area_name))
+					
+				firstname, lastname = reviewer_name.rsplit(' ', 1)
+				output.write('%s\t%s\t%s\t%s\t%s\t%s\n' % (start_account_username, reviewer_email, firstname, lastname, area_name, load_constraint))
 				area_output.write('%s\t%s\t%s\n' % (reviewer_name, reviewer_email, load_constraint))
 			area_output.close()
 		output.close()
